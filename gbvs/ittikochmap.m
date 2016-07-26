@@ -3,7 +3,7 @@ function out = ittikochmap( img, channels )
 params = makeGBVSParams;
 params.useIttiKochInsteadOfGBVS = 1;
 if nargin == 1
-    params.channels = 'CIO';
+    params.channels = 'DIO';
 elseif nargin == 2
     params.channels = channels;
 end
