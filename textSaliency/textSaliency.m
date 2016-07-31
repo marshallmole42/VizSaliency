@@ -48,7 +48,8 @@ for scale = scales  % loop through each scale
     
     filterIdx = [];
     
-    filterIdx = aspectRatio' > 4;
+    filterIdx = aspectRatio' > 3;
+    filterIdx = filterIdx | aspectRatio' < 1/4;
     filterIdx = filterIdx | [mserStats.Eccentricity] > .995 ;
     filterIdx = filterIdx | [mserStats.Solidity] < .3;
     filterIdx = filterIdx | [mserStats.Extent] < 0.2 | [mserStats.Extent] > 0.9;
