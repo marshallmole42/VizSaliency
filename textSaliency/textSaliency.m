@@ -159,9 +159,9 @@ for scale = scales  % loop through each scale
     F1 = textF1(grayimg, boxes);  % gradient contrast feature
     [F2, F3] = textF2F3(scaledimg, boxes);
     
-    F1 = imgaussfilt(F1, sqrt(H*W)/52);
-    F2 = imgaussfilt(F2, sqrt(H*W)/52);
-    F3 = imgaussfilt(F3, sqrt(H*W)/52);
+%     F1 = imgaussfilt(F1, sqrt(H*W)/52);
+%     F2 = imgaussfilt(F2, sqrt(H*W)/52);
+%     F3 = imgaussfilt(F3, sqrt(H*W)/52);
     
     
     F1 = F1*10;
@@ -176,7 +176,8 @@ for scale = scales  % loop through each scale
 %     imshow(f3);
     
     S0 = F1+F2+F3;
-    
+    S0 = imgaussfilt(S0, sqrt(H*W)/52);
+%     S0 = F1.*F2.*F3;
     S = S + imresize(S0, size(S));
     
 end
