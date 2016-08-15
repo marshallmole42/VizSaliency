@@ -22,7 +22,7 @@ if length(dim_img) == 3 && dim_img(3) == 3
     Cr = normalize01(Cr);
     BWcr = edge(Cr, 'Canny');
     
-    for i=1:length(boxes)
+    for i=1:size(boxes,1)
         
         xmin = boxes(i,1);
         xmax = boxes(i,2);
@@ -53,7 +53,7 @@ elseif length(dim_img) == 2
     img = normalize01(img);
     BW = edge(img,'Canny');
     
-    for i=1:length(boxes)
+    for i=1:size(boxes,1)
         
         xmin = boxes(i,1);
         xmax = boxes(i,2);

@@ -4,7 +4,7 @@ function F = textF1(grayimg, boxes)
 
 F = zeros(size(grayimg));
 
-for i=1:length(boxes)
+for i=1:size(boxes,1)
 
     xmin = boxes(i,1);
     xmax = boxes(i,2);
@@ -16,7 +16,7 @@ for i=1:length(boxes)
 
     patch = gmag(xmin:xmax, ymin:ymax);
     
-    F(xcent, ycent) = (mean(patch(:)))/(std(patch(:))+1);
+    F(xcent, ycent) = (mean(patch(:)))/(std(patch(:))+eps);
 
 end
 

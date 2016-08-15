@@ -42,6 +42,10 @@ for scale = scales  % loop through each scale
     mserStats = regionprops(conComp, 'BoundingBox', 'Eccentricity', 'Solidity', 'Extent', 'Euler', 'Image');
     
     bbox = vertcat(mserStats.BoundingBox);
+    if isempty(bbox)
+        continue;
+    end
+    
     w = bbox(:,3);
     h = bbox(:,4);
     aspectRatio = w./h;
@@ -49,7 +53,6 @@ for scale = scales  % loop through each scale
     filterIdx = [];
     
     filterIdx = aspectRatio' > 3;
-    filterIdx = filterIdx | aspectRatio' < 1/4;
     filterIdx = filterIdx | [mserStats.Eccentricity] > .995 ;
     filterIdx = filterIdx | [mserStats.Solidity] < .3;
     filterIdx = filterIdx | [mserStats.Extent] < 0.2 | [mserStats.Extent] > 0.9;
@@ -80,8 +83,17 @@ for scale = scales  % loop through each scale
     strokeWidthFilterIdx = logical(strokeWidthFilterIdx);
     
     % Remove regions based on the stroke width variation
-    Regions(strokeWidthFilterIdx) = [];
-    mserStats(strokeWidthFilterIdx) = [];
+    if ~isempty(strokeWidthFilterIdx)
+        
+        if size(Regions,1)==1 && size(Regions,2)==1 && strokeWidthFilterIdx == 1
+            Regions = [];
+            mserStats = [];
+            continue;
+        else
+            Regions(strokeWidthFilterIdx) = [];
+            mserStats(strokeWidthFilterIdx) = [];
+        end
+    end
     
     % show MSER
 %     handle = figure;
@@ -98,7 +110,14 @@ for scale = scales  % loop through each scale
     
     % use the filtered MSER bounding boxes to create mask for edge maps
     
+    
+    
     bboxes = vertcat(mserStats.BoundingBox);
+    
+    if isempty(bboxes)
+        continue;
+    end
+    
     ymin = bboxes(:,2)*0.98-2;
     xmin = bboxes(:,1)*0.98-2;
     xmax = xmin + round(bboxes(:,3)*1.02) + 1;
@@ -120,11 +139,11 @@ for scale = scales  % loop through each scale
     
     boxes = [ymin ymax xmin xmax];
     
-    mask = zeros(size(grayimg));
-    
-    for k = 1:length(xmin)  % loop through all bounding boxes
-        mask(xmin(k):xmax(k), ymin(k):ymax(k)) = 1;
-    end
+%     mask = zeros(size(grayimg));
+%     
+%     for k = 1:length(xmin)  % loop through all bounding boxes
+%         mask(xmin(k):xmax(k), ymin(k):ymax(k)) = 1;
+%     end
     
     % write mask
 %     outfilename = ['Mask_' filename];
@@ -132,6 +151,10 @@ for scale = scales  % loop through each scale
     
     
     % compute three features
+    
+    if isempty(boxes)
+        continue;
+    end
     
     F1 = textF1(grayimg, boxes);  % gradient contrast feature
     [F2, F3] = textF2F3(scaledimg, boxes);
