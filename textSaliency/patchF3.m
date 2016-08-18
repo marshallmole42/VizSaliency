@@ -1,7 +1,7 @@
 function g = patchF3(patch)
 
 [H, W] = size(patch);
-
+P = 1.22;
 g1=0;
 for i=1:H  % scan through the rows
     if mod(sum(patch(i,:)),2) == 0
@@ -16,6 +16,6 @@ for i=1:W  % scan through the columns
     end
 end
 
-g = (g1+g2)/(W+H);
+g = P^((g1+g2)/(W+H));
 
 end

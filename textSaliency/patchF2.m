@@ -2,7 +2,7 @@ function f = patchF2(patch)
 
 [H, W] = size(patch);
 
-R = 20;
+R = 4;
 f1=0;
 for i=1:H  % scan through the rows
     
